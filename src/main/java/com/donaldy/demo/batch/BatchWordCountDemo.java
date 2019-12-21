@@ -3,11 +3,10 @@ package com.donaldy.demo.batch;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.util.Collector;
 
-public class BatchWrodCountDemo {
+public class BatchWordCountDemo {
 
     public static void main(String[] args) throws Exception {
 
@@ -15,7 +14,8 @@ public class BatchWrodCountDemo {
         ExecutionEnvironment environment = ExecutionEnvironment.getExecutionEnvironment();
 
         // 读取输入数据
-        DataSet<String> dataSet = environment.fromElements("");
+        // flatMap: 1进n出
+        DataSet<String> dataSet = environment.fromElements("flink flink flink", "spark spark spark");
 
         // 单词词频统计
         DataSet<Tuple2<String, Integer>> sum = dataSet.flatMap(new LineSplitter())
@@ -34,5 +34,13 @@ public class BatchWrodCountDemo {
                 collector.collect(new Tuple2<>(word, 1));
             }
         }
+    }
+
+    public void mapPartition() {
+
+        // 获取执行环境
+        ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+
+        //
     }
 }
