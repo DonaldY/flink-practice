@@ -1,4 +1,4 @@
-package com.donaldy.demo.batch;
+package com.donaldy.demo.batch.API;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapPartitionFunction;
