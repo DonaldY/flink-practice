@@ -10,6 +10,6 @@ public class StreamSQLDemo {
         StreamExecutionEnvironment sEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // 创建一个TableEnvironment
-
+        //StreamTableEnivronment sTableEnv =
     }
 }
