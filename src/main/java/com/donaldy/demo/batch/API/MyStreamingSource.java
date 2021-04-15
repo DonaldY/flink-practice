@@ -87,16 +87,19 @@ class StreamingDemo {
     public static void main(String[] args) throws Exception {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        //获取数据源
+        // 获取数据源
+        // 注意：并行度设置为1
         DataStreamSource<MyStreamingSource.Item> text =
-                //注意：并行度设置为1,我们会在后面的课程中详细讲解并行度
                 env.addSource(new MyStreamingSource()).setParallelism(1);
+
         DataStream<MyStreamingSource.Item> item = text.map(
                 (MapFunction<MyStreamingSource.Item, MyStreamingSource.Item>) value -> value);
 
         //打印结果
         item.print().setParallelism(1);
+
         String jobName = "user defined streaming source";
+
         env.execute(jobName);
     }
 
