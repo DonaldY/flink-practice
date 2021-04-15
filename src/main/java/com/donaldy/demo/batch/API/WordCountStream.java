@@ -47,6 +47,6 @@ public class WordCountStream {
         word.print();
 
         // 触发任务执行
-        // streamExecutionEnvironment.execute("wordcount stream process");
+        streamExecutionEnvironment.execute("wordcount stream process");
     }
 }
