@@ -10,7 +10,7 @@ import org.apache.flink.util.Collector;
  * @author donald
  * @date 2021/04/15
  */
-public class WordCount {
+public class WordCountBatch {
 
     public static void main(String[] args) throws Exception {
         // 输入路径和出入路径通过参数传入, 约定第一个参数为输入路径, 第二个参数为输出路径
