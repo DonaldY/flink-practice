@@ -34,7 +34,7 @@ public class TumblingWindow {
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                         long timeMillis = System.currentTimeMillis();
                         int random = new Random().nextInt(10);
-                        System.out.println("value: " + value + " random: " + random + "timestamp: " + timeMillis + "|" + format.format(timeMillis));
+                        System.out.println("value: " + value + " random: " + random + " timestamp: " + timeMillis + " | " + format.format(timeMillis));
                         return new Tuple2<>(value, random);
                     }
                 });
