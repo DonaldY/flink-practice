@@ -38,6 +38,7 @@ public class SlidingWindow {
                 });
         KeyedStream<Tuple2<String, Integer>, Tuple> keyedStream = mapStream.keyBy(0);
         // 基于时间驱动, 每隔 5s 计算一下最近 10s 的数据
+        // 滑动5s 生成一个新的窗口
         WindowedStream<Tuple2<String, Integer>, Tuple, TimeWindow> timeWindow =
                 keyedStream.timeWindow(Time.seconds(10), Time.seconds(5));
 
