@@ -1,13 +1,10 @@
 package com.donaldy.demo.sideoutput;
 
 import org.apache.flink.api.java.tuple.Tuple3;
-import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.collector.selector.OutputSelector;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+import org.apache.flink.streaming.api.datastream.SplitStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.ProcessFunction;
-import org.apache.flink.util.Collector;
-import org.apache.flink.util.OutputTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,28 +32,21 @@ public class SplitDemo {
 
         DataStreamSource<Tuple3<Integer,Integer,Integer>> items = env.fromCollection(data);
 
-        OutputTag<Tuple3<Integer,Integer,Integer>> zeroStream = new OutputTag<Tuple3<Integer,Integer,Integer>>("zeroStream") {};
-        OutputTag<Tuple3<Integer,Integer,Integer>> oneStream = new OutputTag<Tuple3<Integer,Integer,Integer>>("oneStream") {};
-
-
-        SingleOutputStreamOperator<Tuple3<Integer, Integer, Integer>> processStream= items.process(new ProcessFunction<Tuple3<Integer, Integer, Integer>, Tuple3<Integer, Integer, Integer>>() {
+        SplitStream<Tuple3<Integer, Integer, Integer>> splitStream = items.split(new OutputSelector<Tuple3<Integer, Integer, Integer>>() {
             @Override
-            public void processElement(Tuple3<Integer, Integer, Integer> value, Context ctx, Collector<Tuple3<Integer, Integer, Integer>> out) throws Exception {
-
+            public Iterable<String> select(Tuple3<Integer, Integer, Integer> value) {
+                List<String> tags = new ArrayList<>();
                 if (value.f0 == 0) {
-                    ctx.output(zeroStream, value);
+                    tags.add("zeroStream");
                 } else if (value.f0 == 1) {
-                    ctx.output(oneStream, value);
+                    tags.add("oneStream");
                 }
+                return tags;
             }
         });
 
-        DataStream<Tuple3<Integer, Integer, Integer>> zeroSideOutput = processStream.getSideOutput(zeroStream);
-        DataStream<Tuple3<Integer, Integer, Integer>> oneSideOutput = processStream.getSideOutput(oneStream);
-
-        zeroSideOutput.print();
-        oneSideOutput.printToErr();
-
+        splitStream.select("zeroStream").print();
+        splitStream.select("oneStream").printToErr();
 
         //打印结果
         String jobName = "user defined streaming source";
