@@ -41,4 +41,13 @@ public class PayBean {
     public void setTs(Long ts) {
         this.ts = ts;
     }
+
+    @Override
+    public String toString() {
+        return "PayBean{" +
+                "id=" + id +
+                ", state='" + state + '\'' +
+                ", ts=" + ts +
+                '}';
+    }
 }
