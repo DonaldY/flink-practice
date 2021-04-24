@@ -85,7 +85,6 @@ public class LoginCepDemo {
             @Override
             public void processMatch(Map<String, List<LoginBean>> match, Context ctx,
                                      Collector<String> out) {
-                System.out.println(match);
                 List<LoginBean> start = match.get("start");
                 List<LoginBean> next = match.get("next");
                 String res = "start:" + start + "...next:" + next;
